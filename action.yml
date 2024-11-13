@@ -20,6 +20,10 @@ inputs:
     description: When set, current workspace will be overwritten with the content of the restore cache. Default is empty.
     required: false
     default: ''
+  downloadBuildArtifactPattern:
+    description: The pattern to download the build artifacts. Default is *-${{ inputs.configuration }}.
+    required: false
+    default: '*-${{ inputs.configuration }}'
 runs:
   using: composite
   steps:
@@ -40,7 +44,7 @@ runs:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
       with:
-        pattern: '*-${{ inputs.configuration }}'
+        pattern: ${{ inputs.downloadBuildArtifactPattern }}
         merge-multiple: true
 
     - name: Set Version

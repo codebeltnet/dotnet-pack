@@ -36,6 +36,8 @@ with:
   version:
   # When set, current workspace will be overwritten with the content of the restore cache.
   restoreCacheKey: ''
+  # The pattern to download the build artifacts.
+  downloadBuildArtifactPattern: '*-${{ inputs.configuration }}'
 ```
 
 ### Outputs
