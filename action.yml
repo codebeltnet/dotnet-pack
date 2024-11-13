@@ -28,6 +28,10 @@ inputs:
     description: The name of the NuGet package to upload. Default, when left empty, is 'format('NuGet-{0}', inputs.configuration)'.
     required: false
     default: ''
+  projects:
+    description: Optional path to the project(s) file to build. Supports globbing.
+    required: false
+    default: ''
 runs:
   using: composite
   steps:
@@ -62,7 +66,15 @@ runs:
 
     - name: Pack
       run: |
-        dotnet pack --configuration ${{ inputs.configuration }} --verbosity ${{ inputs.level }} --no-build --output ${{ runner.temp }}/.nuget
+        if [ "${{ inputs.projects }}" == "" ]; then
+            dotnet pack --configuration ${{ inputs.configuration }} --verbosity ${{ inputs.level }} --no-build --output ${{ runner.temp }}/.nuget
+        else
+            shopt -s globstar extglob
+            for file in ${{ inputs.projects }}; do
+              dotnet pack $file --configuration ${{ inputs.configuration }} --verbosity ${{ inputs.level }} --no-build --output ${{ runner.temp }}/.nuget
+              echo "Packed '$file'"
+            done
+        fi
       shell: bash
 
     - if: inputs.uploadPackedArtifact == 'true'

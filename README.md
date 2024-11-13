@@ -40,6 +40,8 @@ with:
   downloadBuildArtifactPattern: ''
   # The name of the NuGet package to upload. The name of the NuGet package to upload. Default, when left empty, is 'format('NuGet-{0}', inputs.configuration)'.
   uploadPackedArtifactName: ''
+  # Optional path to the project(s) file to build. Supports globbing.
+  projects: ''
 ```
 
 ### Outputs
