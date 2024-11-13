@@ -36,10 +36,10 @@ with:
   version:
   # When set, current workspace will be overwritten with the content of the restore cache.
   restoreCacheKey: ''
-  # The pattern to download the build artifacts.
-  downloadBuildArtifactPattern: '*-${{ inputs.configuration }}'
-  # The name of the NuGet package to upload.
-  uploadPackedArtifactName: 'NuGet-${{ inputs.configuration }}'
+  # The pattern to download the build artifacts. Default, when left empty, is 'format('*-{0}', inputs.configuration)'.
+  downloadBuildArtifactPattern: ''
+  # The name of the NuGet package to upload. The name of the NuGet package to upload. Default, when left empty, is 'format('NuGet-{0}', inputs.configuration)'.
+  uploadPackedArtifactName: ''
 ```
 
 ### Outputs

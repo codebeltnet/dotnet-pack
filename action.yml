@@ -21,13 +21,13 @@ inputs:
     required: false
     default: ''
   downloadBuildArtifactPattern:
-    description: The pattern to download the build artifacts. Default is *-${{ inputs.configuration }}.
+    description: The pattern to download the build artifacts. Default, when left empty, is 'format('*-{0}', inputs.configuration)'.
     required: false
-    default: '*-${{ inputs.configuration }}'
+    default: ''
   uploadPackedArtifactName:
-    description: The name of the NuGet package to upload. Default is NuGet-${{ inputs.configuration }}.
+    description: The name of the NuGet package to upload. Default, when left empty, is 'format('NuGet-{0}', inputs.configuration)'.
     required: false
-    default: 'NuGet-${{ inputs.configuration }}'
+    default: ''
 runs:
   using: composite
   steps:
@@ -48,7 +48,7 @@ runs:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
       with:
-        pattern: ${{ inputs.downloadBuildArtifactPattern }}
+        pattern: ${{ inputs.downloadBuildArtifactPattern != '' && inputs.downloadBuildArtifactPattern || format('*-{0}', inputs.configuration) }}
         merge-multiple: true
 
     - name: Set Version
@@ -69,7 +69,7 @@ runs:
       name: Upload NuGet Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ inputs.uploadPackedArtifactName }}
+        name: ${{ inputs.uploadPackedArtifactName != '' && inputs.uploadPackedArtifactName || format('NuGet-{0}', inputs.configuration) }}
         path: ${{ runner.temp }}/.nuget
         if-no-files-found: error
         include-hidden-files: true
