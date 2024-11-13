@@ -24,6 +24,10 @@ inputs:
     description: The pattern to download the build artifacts. Default is *-${{ inputs.configuration }}.
     required: false
     default: '*-${{ inputs.configuration }}'
+  uploadPackedArtifactName:
+    description: The name of the NuGet package to upload. Default is NuGet-${{ inputs.configuration }}.
+    required: false
+    default: 'NuGet-${{ inputs.configuration }}'
 runs:
   using: composite
   steps:
@@ -65,7 +69,7 @@ runs:
       name: Upload NuGet Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: NuGet-${{ inputs.configuration }}
+        name: ${{ inputs.uploadPackedArtifactName }}
         path: ${{ runner.temp }}/.nuget
         if-no-files-found: error
         include-hidden-files: true

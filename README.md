@@ -38,6 +38,8 @@ with:
   restoreCacheKey: ''
   # The pattern to download the build artifacts.
   downloadBuildArtifactPattern: '*-${{ inputs.configuration }}'
+  # The name of the NuGet package to upload.
+  uploadPackedArtifactName: 'NuGet-${{ inputs.configuration }}'
 ```
 
 ### Outputs
