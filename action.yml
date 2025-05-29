@@ -1,25 +1,29 @@
 name: .NET Pack from Codebelt
 description: An opinionated action that retrieve previously build projects and packs them into a NuGet package.
 inputs:
-  projects:
-    description: Optional path to the project(s) file to build. Supports globbing.
-    required: false
-    default: ''
+  configuration:
+    description: Defines the build configuration. Default is Release.
+    required: true
+    default: 'Release'
   verbosity-level:
     description: Sets the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. The default is quiet.
     required: true
     default: 'quiet'
+  projects:
+    description: Optional path to the project(s) file to build. Supports globbing.
+    required: false
+    default: ''
 runs:
   using: composite
   steps:
     - name: Pack
       run: |
         if [ "${{ inputs.projects }}" == "" ]; then
-            dotnet pack --verbosity ${{ inputs.verbosity-level }} --no-build --output ${{ runner.temp }}/.nuget
+            dotnet pack --configuration ${{ inputs.configuration }} --verbosity ${{ inputs.verbosity-level }} --no-build --output ${{ runner.temp }}/.nuget
         else
             shopt -s globstar extglob
             for file in ${{ inputs.projects }}; do
-              dotnet pack $file --verbosity ${{ inputs.verbosity-level }} --no-build --output ${{ runner.temp }}/.nuget
+              dotnet pack $file --configuration ${{ inputs.configuration }} --verbosity ${{ inputs.verbosity-level }} --no-build --output ${{ runner.temp }}/.nuget
               echo "Packed '$file'"
             done
         fi
