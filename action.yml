@@ -10,7 +10,7 @@ inputs:
     required: true
     default: 'quiet'
   projects:
-    description: Optional path to the project(s) file to build. Supports globbing.
+    description: Optional path to the project(s) file to pack. Supports globbing.
     required: false
     default: ''
 runs:
